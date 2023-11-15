@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.Weather_App.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme.AppWidgetContainer"
+    android:background="@android:color/transparent"
+    android:layout_centerHorizontal="true"
+    android:layout_centerVertical="true"
+    android:gravity="center_vertical|center_horizontal|center"
+
+
+    >
+
+
+    <TextView
+        android:id="@+id/appwidget_text"
+        android:layout_width="181dp"
+        android:layout_height="51dp"
+
+
+        android:contentDescription="@string/appwidget_text"
+        android:gravity="center"
+        android:text="@string/appwidget_text"
+        android:textSize="20sp"
+        android:textStyle="normal" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+
+        android:layout_below="@+id/appwidget_text"
+
+        android:layout_alignStart="@+id/appwidget_text"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="-13dp"
+        android:gravity="center"
+        android:text="20°"
+        android:textSize="36sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="191dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_alignStart="@+id/textView"
+        android:layout_alignEnd="@+id/textView"
+
+        android:layout_marginStart="-59dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="-59dp"
+        android:gravity="center"
+        android:text="troi quang"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="89dp"
+        android:layout_height="82dp"
+        android:layout_alignTop="@+id/appwidget_text"
+        android:layout_marginStart="-36dp"
+        android:layout_marginTop="13dp"
+        android:layout_toEndOf="@+id/appwidget_text"
+        tools:srcCompat="@tools:sample/avatars" />
+
+
+</RelativeLayout>
