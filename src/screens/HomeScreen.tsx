@@ -29,7 +29,6 @@ import notifee from '@notifee/react-native';
 import Setting from '../../model/Setting';
 
 const TopTab = createMaterialTopTabNavigator();
-const group = 'group.com.hiepnguyen.my_widget';
 const SharedGroupPreferences = NativeModules.RNSharedWidget;
 const SharedStorage = NativeModules.SharedStorage;
 function Hourly(hourlyWeather: HourlyWeather[]) {
@@ -50,9 +49,6 @@ function Hourly(hourlyWeather: HourlyWeather[]) {
         {hourlyWeather[0].map(a =>
           a.time?.slice(11, 13) > time ? (
             <HourlyWeatherButton
-              // time={a.time}
-              // temp_c={a.temp_c}
-              // condition_code={a.condition_code}
               hourlyWeather={a}
               key={parseInt(a?.time.slice(11, 13))}
               isHourlyButton={true}
@@ -64,7 +60,6 @@ function Hourly(hourlyWeather: HourlyWeather[]) {
   );
 }
 function Weekly(dayForecast: ForecastDay[]) {
-  console.log('Week render ne');
   return (
     <ScrollView
       horizontal={true}
@@ -78,9 +73,6 @@ function Weekly(dayForecast: ForecastDay[]) {
         }}>
         {dayForecast[0].map(a => (
           <HourlyWeatherButton
-            // time={a.time}
-            // temp_c={a.temp_c}
-            // condition_code={a.condition_code}
             hourlyWeather={a}
             key={parseInt(a.date?.slice(8, 10))}
             isHourlyButton={false}
@@ -105,50 +97,7 @@ function HomeScreen({navigation}) {
   );
   const [backGround, setBackGround] = React.useState<string>();
   const [videoBackground, setVideoBackground] = React.useState<number>();
-  //const [imageLoaded, setImageLoaded] = React.useState(false);
-  /*const onImageLoad = () => {
-        setImageLoaded(true);
-      };*/
-  const handleSubmit = async () => {
-    try {
-      // iOS
-      await SharedGroupPreferences.setData(
-        'widgetKey',
-        JSON.stringify({
-          name: currentCondition?.name,
-          condition_text: currentCondition?.condition_text,
-          condition_icon: `https:${currentCondition?.condition_icon}`,
-          temp: setting?.fDegree
-            ? Math.round(currentCondition?.temp_c * 1.8 + 32)
-            : currentCondition?.temp_c,
-        }),
-        (status: number | null) => {
-          console.log('--------------------------');
-          console.log('status: ', status);
-          console.log('--------------------------');
-        },
-      );
-    } catch (error) {
-      console.log({error});
-    }
-    try {
-      await SharedStorage.set(
-        JSON.stringify({
-          name: currentCondition?.name,
-          degree: `${
-            setting?.fDegree
-              ? Math.round(currentCondition?.temp_c * 1.8 + 32)
-              : currentCondition?.temp_c
-          }°C`,
-          conditionText: currentCondition?.condition_text,
-          conditionIcon: forecastDay
-            ? `https:${forecastDay[0]?.icon_link}`
-            : 'https://cdn.weatherapi.com/weather/64x64/day/122.png',
-        }),
-      );
-    } catch (error) {
-      console.log({error});
-    }
+  
   };
 
   const code = currentCondition?.condition_code;
@@ -239,18 +188,12 @@ function HomeScreen({navigation}) {
     }
     storeData();
     storeCurrentCondition();
-
-    // getSettingData();
-    // handleWidget();
   }, [code, day, storeData, storeCurrentCondition]);
-  // console.log(typeof require('../img/Background/rainy_night.jpg'));
-  // console.log(hourlyForecast);
   // @ts-ignore
   // @ts-ignore
   // @ts-ignore
   handleSubmit();
-  // getSettingData();
-
+  const temperatureUnit = setting?.fDegree ? 'F' : 'C';
   return (
     <View style={{height: '100%', width: '100%'}}>
       <Video
@@ -271,32 +214,23 @@ function HomeScreen({navigation}) {
             }}>
             <Text style={styles.locationText}>{currentCondition?.name}</Text>
             <Text style={styles.temperatureText}>
-              {setting?.fDegree
+              {temperatureUnit == 'F'
                 ? Math.round(currentCondition?.temp_c * 1.8 + 32)
                 : currentCondition?.temp_c}
-              °
+              °{temperatureUnit}
             </Text>
             <Text style={styles.skyText}>
               {currentCondition?.condition_text}
             </Text>
             <Text style={styles.lowHighTemp}>
               Thấp nhất:
-              {setting?.fDegree
-                ? Math.round(
-                    Math.round(forecastDay ? forecastDay[0].minTemp_c : null) *
-                      1.8 +
-                      32,
-                  )
-                : Math.round(forecastDay ? forecastDay[0].minTemp_c : null)}
-              ° Cao nhất:
-              {setting?.fDegree
-                ? Math.round(
-                    Math.round(forecastDay ? forecastDay[0].maxTemp_c : null) *
-                      1.8 +
-                      32,
-                  )
-                : Math.round(forecastDay ? forecastDay[0].maxTemp_c : null)}
-              °
+              {temperatureUnit == 'F'
+                ? Math.round(forecastDay ? forecastDay[0].minTemp_c * 1.8 + 32 : null)
+                : Math.round(forecastDay ? forecastDay[0].minTemp_c : null)} °{temperatureUnit}
+              {'   '} Cao nhất:
+              {temperatureUnit == 'F'
+                ? Math.round(forecastDay ? forecastDay[0].maxTemp_c * 1.8 + 32 : null)
+                : Math.round(forecastDay ? forecastDay[0].maxTemp_c : null)} °{temperatureUnit}
             </Text>
             <View style={{marginTop: 7}}>
               <View style={{flexDirection: 'row', alignContent: 'center'}}>
@@ -320,11 +254,7 @@ function HomeScreen({navigation}) {
               sceneContainerStyle={{backgroundColor: 'transparent'}}>
               <TopTab.Screen
                 name={'Hourly'}
-                // component={() =>
-                //   currentCondition != undefined ? (
-                //     <Hourly time={currentCondition!.time} />
-                //   ) : null
-                // }
+           
                 options={{
                   tabBarIcon: ({focused}) => (
                     <Text
@@ -402,50 +332,3 @@ function HomeScreen({navigation}) {
     /*{ <HourlyWeatherButton /> }*/
   );
 }
-export default HomeScreen;
-const styles = StyleSheet.create({
-  container: {
-    height: '100%',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    position: 'relative',
-    zIndex: 1,
-  },
-  locationText: {
-    color: '#FFFF',
-    fontWeight: '400',
-    fontSize: 24,
-  },
-  temperatureText: {
-    color: '#FFFF',
-    fontWeight: '300',
-    fontSize: 60,
-  },
-  skyText: {
-    marginBottom: 10,
-    fontWeight: '500',
-    fontSize: 15,
-    color: 'rgba(255, 255, 255, 0.6)',
-  },
-  lowHighTemp: {
-    color: '#FFFF',
-    fontWeight: '400',
-    fontSize: 15,
-  },
-  time: {
-    color: '#FFFF',
-    fontWeight: '400',
-    fontSize: 18,
-  },
-  backgroundVideo: {
-    position: 'absolute',
-    zIndex: -1,
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0,
-    alignItems: 'stretch',
-    bottom: 0,
-    right: 0,
-  },
-});
