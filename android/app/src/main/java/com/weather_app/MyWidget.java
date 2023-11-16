@@ -1,79 +1,63 @@
 package com.weather_app;
 
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.RemoteViews;
 import com.squareup.picasso.Picasso;
-import com.google.gson.Gson;
-import com.weather_app.databinding.MyWidgetBinding;
-
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
 public class MyWidget extends AppWidgetProvider {
-    MyWidgetBinding binding;
+
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-
         try {
-
             SharedPreferences sharedPref = context.getSharedPreferences("DATA", Context.MODE_PRIVATE);
             String appString = sharedPref.getString("appData", "{\"name\":'no data'}");
 
-
-
             JSONObject data = new JSONObject(appString);
-
-            Log.d("TUAN HIHI",  data.getString("conditionIcon"));
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.my_widget);
-            Picasso.get().load(data.getString("conditionIcon")).into(views, R.id.imageView, new int[] {R.layout.my_widget});
 
-
+            // Kiểm tra xem URL hình ảnh có hợp lệ không
+            String iconUrl = data.getString("conditionIcon");
+            if (isValidUrl(iconUrl)) {
+                Picasso.get().load(iconUrl).into(views, R.id.imageView, new int[] {R.layout.my_widget});
+            }
 
             views.setTextViewText(R.id.appwidget_text, data.getString("name"));
             views.setTextViewText(R.id.textView2, data.getString("conditionText"));
             views.setTextViewText(R.id.textView, data.getString("degree"));
 
-
-//            views.setTextViewText(R.id.imageView2, "https://cdn.weatherapi.com/weather/64x64/day/122.png");
             appWidgetManager.updateAppWidget(appWidgetId, views);
-        }catch (JSONException e) {
+        } catch (JSONException e) {
             e.printStackTrace();
         }
     }
 
     @Override
     public void onUpdate(Context context, AppWidgetManager appWidgetManager, int[] appWidgetIds) {
-        // There may be multiple widgets active, so update all of them
+        // Có thể có nhiều widget đang hoạt động, vì vậy hãy cập nhật tất cả chúng
         for (int appWidgetId : appWidgetIds) {
-
             updateAppWidget(context, appWidgetManager, appWidgetId);
         }
     }
 
     @Override
     public void onEnabled(Context context) {
-        // Enter relevant functionality for when the first widget is created
+        // Hiển thị thông báo khi widget đầu tiên được tạo
+        Toast.makeText(context, "Đã khởi tạo Widget cho ứng dụng thời tiết", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onDisabled(Context context) {
-        // Enter relevant functionality for when the last widget is disabled
+        // Thực hiện chức năng liên quan khi widget cuối cùng bị vô hiệu hóa
+        Toast.makeText(context, "Weather Widget đã bị vô hiệu hóa!", Toast.LENGTH_SHORT).show();
+    }
+
+    private static boolean isValidUrl(String url) {
+        // Thực hiện kiểm tra xem URL có hợp lệ không
+        return url != null && !url.isEmpty();
     }
 }
-
