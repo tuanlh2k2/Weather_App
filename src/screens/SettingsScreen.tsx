@@ -52,7 +52,6 @@ function SettingsScreen() {
     }
   };
   async function onDisplayNotification() {
-    // Request permissions (required for iOS)
     await notifee.requestPermission();
 
     // Create a channel (required for Android)
@@ -66,9 +65,9 @@ function SettingsScreen() {
       title: `Thời tiết tại ${currentCondition?.name}`,
       body: `Nhiệt độ:   ${
         fDegree
-          ? Math.round(currentCondition?.temp_c * 1.8 + 32)
-          : currentCondition?.temp_c
-      }°,  ${currentCondition?.condition_text} `,
+                ? `${Math.round(currentCondition?.temp_c * 1.8 + 32)}°F`
+                : `${currentCondition?.temp_c}°C`}
+      },  ${currentCondition?.condition_text} `,
 
       android: {
         channelId,
@@ -80,19 +79,9 @@ function SettingsScreen() {
           id: 'default',
         },
       },
-      ios: {
-        attachments: [
-          {
-            url: `https:${currentCondition?.condition_icon}`,
-          },
-        ],
-      },
     });
   }
   async function cancelDisplayNotification() {
-    // Request permissions (required for iOS)
-    await notifee.requestPermission();
-
     // Create a channel (required for Android)
 
     // Display a notification
@@ -113,15 +102,7 @@ function SettingsScreen() {
       }}>
       <Text
         style={
-          Platform.OS == 'ios'
-            ? {
-                color: 'white',
-                fontSize: 36,
-                paddingBottom: 50,
-                marginLeft: 20,
-                marginRight: 20,
-              }
-            : {
+              {
                 color: 'white',
                 fontSize: 36,
                 paddingBottom: 50,
@@ -131,18 +112,7 @@ function SettingsScreen() {
       </Text>
       <View
         style={
-          Platform.OS == 'ios'
-            ? {
-                borderColor: 'white',
-                borderRadius: 20,
-                borderWidth: 1,
-                padding: 15,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginLeft: 20,
-                marginRight: 20,
-              }
-            : {
+              {
                 borderColor: 'white',
                 borderRadius: 20,
                 borderWidth: 1,
@@ -158,7 +128,6 @@ function SettingsScreen() {
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
           thumbColor={noti ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
           onValueChange={value => {
             storeData(fDegree!, value);
             setNoti(value!);
@@ -169,19 +138,7 @@ function SettingsScreen() {
       </View>
       <View
         style={
-          Platform.OS == 'ios'
-            ? {
-                borderColor: 'white',
-                borderRadius: 20,
-                borderWidth: 1,
-                padding: 15,
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginLeft: 20,
-                marginRight: 20,
-                marginTop: 26,
-              }
-            : {
+           {
                 borderColor: 'white',
                 borderRadius: 20,
                 borderWidth: 1,
@@ -198,7 +155,6 @@ function SettingsScreen() {
         <Switch
           trackColor={{false: '#767577', true: '#81b0ff'}}
           thumbColor={fDegree ? '#f5dd4b' : '#f4f3f4'}
-          ios_backgroundColor="#3e3e3e"
           onValueChange={value => {
             storeData(value, noti!);
             setFDegree(value!);

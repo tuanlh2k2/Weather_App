@@ -295,7 +295,7 @@ function HomeScreen({navigation}) {
                         fontSize: 16,
                         color: 'white',
                       }}>
-                      Theo giờ
+                      Giờ tiếp theo
                     </Text>
                   ),
                   tabBarIconStyle: {
@@ -322,7 +322,7 @@ function HomeScreen({navigation}) {
                         fontSize: 16,
                         color: 'white',
                       }}>
-                      Theo tuần
+                      Ngày tiếp theo
                     </Text>
                   ),
                   tabBarIconStyle: {
