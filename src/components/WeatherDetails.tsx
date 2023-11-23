@@ -4,7 +4,6 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Setting from '../../model/Setting';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width} = Dimensions.get('window');
-console.log("FIX weather detail");
 function WeatherDetails(currentCondition: any) {
   const [setting, getSetting] = React.useState<Setting>();
   const getSettingData = async () => {
@@ -270,8 +269,6 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     backgroundColor: 'rgba(34, 80, 150, 0.4)',
-    //     alignItems: 'center',
-    //     justifyContent: 'center',
     justifyContent: 'space-between',
     padding: 10,
     marginHorizontal: 15,

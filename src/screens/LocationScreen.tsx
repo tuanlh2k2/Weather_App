@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Video from 'react-native-video';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CheckBox } from 'react-native-elements'; // Import CheckBox
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import SearchForCities from '../../services/searchForCities';
 import City from '../../model/City';
@@ -25,6 +26,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 function RenderItem({ item }) {
   const detail = GetSavedLocationDetail(item.item.lat, item.item.lon);
   const [setting, setSetting] = useState<Setting>();
+  const [isChecked, setChecked] = useState(false);
 
   useEffect(() => {
     const getSettingData = async () => {

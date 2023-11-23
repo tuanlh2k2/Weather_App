@@ -29,24 +29,10 @@ function Hourly(hourlyWeather: HourlyWeather[]) {
   const time = parseInt(hourlyWeather[1]?.slice(11, 13));
 
   return (
-    <ScrollView
-      horizontal={true}
-      showsHorizontalScrollIndicator={false}
-      contentContainerStyle={{paddingLeft: 8}}>
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
-        {hourlyWeather[0].map(a =>
-          a.time?.slice(11, 13) > time ? (
-            <HourlyWeatherButton
-              hourlyWeather={a}
-              key={parseInt(a?.time.slice(11, 13))}
-              isHourlyButton={true}
-            />
-          ) : null,
+    <ScrollView horizontal={true} showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingLeft: 8 }}>
+      <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+        {hourlyWeather[0].map((a) =>
+          a.time?.slice(11, 13) > time && <HourlyWeatherButton hourlyWeather={a} key={parseInt(a?.time.slice(11, 13))} isHourlyButton={true} />
         )}
       </View>
     </ScrollView>
@@ -251,20 +237,15 @@ function HomeScreen({navigation}) {
               {currentCondition?.condition_text}
             </Text>
             <Text style={styles.lowHighTemp}>
-              Thấp nhất:
+              Thấp nhất{' : '}
               {temperatureUnit == 'F'
                 ? Math.round(forecastDay ? forecastDay[0].minTemp_c * 1.8 + 32 : null)
                 : Math.round(forecastDay ? forecastDay[0].minTemp_c : null)} °{temperatureUnit}
-              {'   '} Cao nhất:
+              {' -- '} Cao nhất {' : '}
               {temperatureUnit == 'F'
                 ? Math.round(forecastDay ? forecastDay[0].maxTemp_c * 1.8 + 32 : null)
                 : Math.round(forecastDay ? forecastDay[0].maxTemp_c : null)} °{temperatureUnit}
             </Text>
-            <View style={{marginTop: 7}}>
-              <View style={{flexDirection: 'row', alignContent: 'center'}}>
-                {/*<Humidity width={25} height={25} />*/}
-              </View>
-            </View>
           </View>
 
           <View

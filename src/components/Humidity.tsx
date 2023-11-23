@@ -9,7 +9,6 @@ function Humidity() {
     <View style={styles.container}>
       <View></View>
       <Temperature height={30} width={30} />
-      <Text>CẢM GIÁC NHƯ</Text>
     </View>
   );
 }
