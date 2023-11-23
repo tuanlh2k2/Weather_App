@@ -77,8 +77,6 @@ function Weekly(dayForecast: ForecastDay[]) {
 }
 
 function HomeScreen({navigation}) {
-  console.log(navigation);
-
   const location = GetCurrentLocation();
   const currentCondition = getCurrentWeather(
     location?.latitude,
@@ -104,11 +102,11 @@ function HomeScreen({navigation}) {
             : currentCondition?.temp_c,
         }),
         (status: number | null) => {
-          console.log('error : ', status);
+          // console.log('error : ', status);
         },
       );
     } catch (error) {
-      console.log({error});
+      // console.log({error});
     }
     try {
       const temperature =
@@ -222,9 +220,6 @@ function HomeScreen({navigation}) {
     storeData();
     storeCurrentCondition();
   }, [code, day, storeData, storeCurrentCondition]);
-  // @ts-ignore
-  // @ts-ignore
-  // @ts-ignore
   handleSubmit();
   const temperatureUnit = setting?.fDegree ? 'F' : 'C';
   return (
@@ -295,7 +290,7 @@ function HomeScreen({navigation}) {
                         fontSize: 16,
                         color: 'white',
                       }}>
-                      Giờ tiếp theo
+                      Theo giờ
                     </Text>
                   ),
                   tabBarIconStyle: {
@@ -322,7 +317,7 @@ function HomeScreen({navigation}) {
                         fontSize: 16,
                         color: 'white',
                       }}>
-                      Ngày tiếp theo
+                      Theo ngày
                     </Text>
                   ),
                   tabBarIconStyle: {
@@ -357,7 +352,6 @@ function HomeScreen({navigation}) {
         </ScrollView>
       </SafeAreaView>
     </View>
-    /*{ <HourlyWeatherButton /> }*/
   );
 }
 export default HomeScreen;

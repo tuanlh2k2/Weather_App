@@ -1,7 +1,3 @@
-/**
- * sử dụng SharedPreferences để lưu trữ dữ liệu và cách sử dụng các widget để hiển thị dữ liệu đó 
- * trên màn hình chính của thiết bị.
- */
 package com.weather_app;
 
 import com.facebook.react.ReactPackage;

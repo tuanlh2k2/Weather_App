@@ -50,6 +50,9 @@ function Hourly(hourlyWeather: HourlyWeather[]) {
         {hourlyWeather[0].map(a =>
           a.time.slice(11, 13) > time ? (
             <HourlyWeatherButton
+              // time={a.time}
+              // temp_c={a.temp_c}
+              // condition_code={a.condition_code}
               hourlyWeather={a}
               key={parseInt(a.time.slice(11, 13))}
               isHourlyButton={true}
@@ -74,6 +77,9 @@ function Weekly(dayForecast: ForecastDay[]) {
         }}>
         {dayForecast[0].map(a => (
           <HourlyWeatherButton
+            // time={a.time}
+            // temp_c={a.temp_c}
+            // condition_code={a.condition_code}
             hourlyWeather={a}
             key={parseInt(a.date.slice(8, 10))}
             isHourlyButton={false}
@@ -98,6 +104,10 @@ function DetailScreen(navigation) {
   const day = currentCondition?.is_day;
   const clear_day = [1000];
   const clear_night = [1000];
+  const currentTime =
+    currentCondition && currentCondition.time
+      ? currentCondition.time.slice(11, 16)
+      : null;
   const rainy_day = [
     1072, 1087, 1189, 1192, 1195, 1198, 1201, 1237, 1243, 1246, 1249, 1252,
     1261, 1264, 1276, 1063, 1180, 1183, 1186, 1240, 1273, 1066, 1069, 1114,
@@ -122,7 +132,7 @@ function DetailScreen(navigation) {
     try {
       await AsyncStorage.setItem('background', backGround!.toString());
     } catch (error) {
-      // Error.
+      // Error saving data
     }
   };
   const [setting, getSetting] = React.useState<Setting>();
@@ -135,7 +145,7 @@ function DetailScreen(navigation) {
         getSetting({fDegree: val.fDegree, notification: val.noti});
       }
     } catch (error) {
-      // Error.
+      // Error retrieving data
     }
   };
 
@@ -151,7 +161,7 @@ function DetailScreen(navigation) {
     let arr = JSON.parse(cities!) == null ? [] : JSON.parse(cities!);
 
     if (arr.find(o => o.name == city.name) != undefined) {
-      Alert.alert('Thành phố này đã có trong danh sách lưu trữ!');
+      Alert.alert('Thành phố đã tồn tại trong danh sách lưu trữ');
     } else {
       arr.push(city);
 
@@ -198,10 +208,10 @@ function DetailScreen(navigation) {
     rainy_day,
     rainy_night,
   ]);
-  
   // @ts-ignore
   // @ts-ignore
   // @ts-ignore
+  console.log('Detail render ne');
   return (
     <View style={{height: '100%', width: '100%'}}>
       <Video
@@ -254,37 +264,35 @@ function DetailScreen(navigation) {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            
+            <Text style={styles.time}>{currentTime}</Text>
             <Text style={styles.locationText}>{currentCondition?.name}</Text>
             <Text style={styles.temperatureText}>
               {setting?.fDegree
-                ? `${Math.round(currentCondition?.temp_c * 1.8 + 32)}°F`
-                : `${currentCondition?.temp_c}°C`}
+                ? Math.round(currentCondition?.temp_c * 1.8 + 32)
+                : currentCondition?.temp_c}
+              °{setting?.fDegree ? 'F' : 'C'}
             </Text>
             <Text style={styles.skyText}>
               {currentCondition?.condition_text}
             </Text>
             <Text style={styles.lowHighTemp}>
-              Thấp nhất:
+              Thấp nhất : {' '}
               {setting?.fDegree
-                ? `${Math.round(
+                ? Math.round(
                     Math.round(forecastDay ? forecastDay[0].minTemp_c : null) *
                       1.8 +
                       32,
-                  )}°F`
-                : `${Math.round(
-                    forecastDay ? forecastDay[0].minTemp_c : null,
-                  )}  °C`}{'  '}
-              -- Cao nhất:
+                  )
+                : Math.round(forecastDay ? forecastDay[0].minTemp_c : null)}
+              °{setting?.fDegree ? 'F' : 'C'} {' -- '} Cao nhất {' '}:
               {setting?.fDegree
-                ? `${Math.round(
+                ? Math.round(
                     Math.round(forecastDay ? forecastDay[0].maxTemp_c : null) *
                       1.8 +
                       32,
-                  )} °F`
-                : `${Math.round(
-                    forecastDay ? forecastDay[0].maxTemp_c : null,
-                  )} °C`}
+                  )
+                : Math.round(forecastDay ? forecastDay[0].maxTemp_c : null)}
+              °{setting?.fDegree ? 'F' : 'C'}
             </Text>
             <View style={{marginTop: 7}}>
               <View style={{flexDirection: 'row', alignContent: 'center'}} />
@@ -310,11 +318,11 @@ function DetailScreen(navigation) {
                   tabBarIcon: ({focused}) => (
                     <Text
                       style={{
-                        fontWeight: focused ? '1000' : '300',
+                        fontWeight: focused ? '600' : '300',
                         fontSize: 16,
                         color: 'white',
                       }}>
-                      Giờ tiếp theo
+                      Theo giờ
                     </Text>
                   ),
                   tabBarIconStyle: {
@@ -341,7 +349,7 @@ function DetailScreen(navigation) {
                         fontSize: 16,
                         color: 'white',
                       }}>
-                      Ngày tiếp theo
+                      Theo ngày
                     </Text>
                   ),
                   tabBarIconStyle: {

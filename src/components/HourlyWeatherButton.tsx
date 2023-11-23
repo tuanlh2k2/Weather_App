@@ -41,10 +41,6 @@ function HourlyWeatherButton(
   };
 
   getSettingData();
-  // const img = require(hourlyWeather.hourlyWeather
-  //   ? hourlyWeather.hourlyWeather?.icon_link
-  //   : 0);
-  // console.log(img);
   return (
     <View style={styles.container}>
       <Text style={styles.hours}>
@@ -67,16 +63,14 @@ function HourlyWeatherButton(
                 hourlyWeather.isHourlyButton
                   ? hourlyWeather.hourlyWeather.temp_c
                   : hourlyWeather.hourlyWeather.avgTemp_c,
-              ) *
-                1.8 +
-                32,
+              ) * 1.8 + 32,
             )
           : Math.round(
               hourlyWeather.isHourlyButton
                 ? hourlyWeather.hourlyWeather.temp_c
                 : hourlyWeather.hourlyWeather.avgTemp_c,
             )}
-        °
+        °{setting?.fDegree ? 'F' : 'C'}
       </Text>
     </View>
   );

@@ -4,7 +4,7 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 import Setting from '../../model/Setting';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const {width} = Dimensions.get('window');
-console.log(width);
+console.log("FIX weather detail");
 function WeatherDetails(currentCondition: any) {
   const [setting, getSetting] = React.useState<Setting>();
   const getSettingData = async () => {
@@ -80,14 +80,14 @@ function WeatherDetails(currentCondition: any) {
   const rainfall = currentCondition.currentCondition?.rainfall;
   let rainfallMessage;
   if (rainfall !== undefined) {
-    if (rainfall <= 2 && rainfall >= 1) {
+    if (rainfall < 2 && rainfall >= 1) {
       rainfallMessage = 'Có thể mưa nhỏ.';
-    } else if (rainfall > 2 && rainfall <= 10) {
-      rainfallMessage = 'Có mưa.';
+    } else if (rainfall >= 2 && rainfall <= 10) {
+      rainfallMessage = 'Có mưa nhỏ.';
     } else if (rainfall > 10) {
       rainfallMessage = 'Mưa lớn.';
     } else {
-      rainfallMessage = 'Trời không mưa.';
+      rainfallMessage = 'Trời tạnh ráo.';
     }
   } else {
     rainfallMessage = 'Không có thông tin về lượng mưa.';
@@ -220,7 +220,7 @@ function WeatherDetails(currentCondition: any) {
               {setting?.fDegree
                 ? Math.round(feelslike_c * 1.8 + 32)
                 : feelslike_c}
-              °
+              ° {setting?.fDegree ? 'F' : 'C'}
             </Text>
           </View>
           <View>
