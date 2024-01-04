@@ -1,8 +1,3 @@
-/**
- *  lấy vị trí hiện tại của thiết bị bằng cách sử dụng API định vị, 
- *  cập nhật biến trạng thái vị trí với dữ liệu thu được và trả về dữ liệu vị trí để sử dụng tiếp theo.
- */
-
 import React, {useState, useEffect} from 'react';
 import {View, Text} from 'react-native';
 import Geolocation, {

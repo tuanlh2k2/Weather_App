@@ -1,6 +1,3 @@
-/**
- * lấy và hiển thị dự báo thời tiết trong 7 ngày cho một vị trí được chỉ định.
- */
 import React, {useEffect} from 'react';
 import axios from 'axios';
 

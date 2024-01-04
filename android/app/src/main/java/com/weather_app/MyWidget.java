@@ -1,6 +1,4 @@
 package com.weather_app;
-
-
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -29,28 +27,15 @@ import java.net.URL;
 public class MyWidget extends AppWidgetProvider {
     MyWidgetBinding binding;
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager, int appWidgetId) {
-
         try {
-
             SharedPreferences sharedPref = context.getSharedPreferences("DATA", Context.MODE_PRIVATE);
             String appString = sharedPref.getString("appData", "{\"name\":'no data'}");
-
-
-
             JSONObject data = new JSONObject(appString);
-
-            Log.d("HIEP",  data.getString("conditionIcon"));
             RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.my_widget);
             Picasso.get().load(data.getString("conditionIcon")).into(views, R.id.imageView, new int[] {R.layout.my_widget});
-
-
-
             views.setTextViewText(R.id.appwidget_text, data.getString("name"));
             views.setTextViewText(R.id.textView2, data.getString("conditionText"));
             views.setTextViewText(R.id.textView, data.getString("degree"));
-
-
-//            views.setTextViewText(R.id.imageView2, "https://cdn.weatherapi.com/weather/64x64/day/122.png");
             appWidgetManager.updateAppWidget(appWidgetId, views);
         }catch (JSONException e) {
             e.printStackTrace();

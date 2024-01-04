@@ -67,7 +67,7 @@ function SettingsScreen() {
         fDegree
                 ? `${Math.round(currentCondition?.temp_c * 1.8 + 32)}°F`
                 : `${currentCondition?.temp_c}°C`}
-      },  ${currentCondition?.condition_text} `,
+      ,  ${currentCondition?.condition_text} `,
 
       android: {
         channelId,
